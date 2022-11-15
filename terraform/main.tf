@@ -3,7 +3,6 @@ terraform {
     resource_group_name  = "example-resources"
         key              = "terraformgithubexample.tfstate"
   }
-}
 
   required_providers {
     azurerm = {
@@ -11,7 +10,7 @@ terraform {
       version = "=3.0.0"
     }
   }
-
+}
 
 # Configure the Microsoft Azure Provider
 provider "azurerm" {
