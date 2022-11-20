@@ -14,23 +14,24 @@ provider "azurerm" {
   features {}
 }
 
-resource "azurerm_resource_group" "example" {
-  name     = "example-resources"
-  location = "West Europe"
+resource "azurerm_resource_group" "rg01" {
+    name = var.resource_group_name
+    location = var.resource_group_location
 }
 
-resource "azurerm_virtual_network" "example" {
-  name                = "example-virtual-network"
-  address_space       = ["10.0.0.0/16"]
-  location            = azurerm_resource_group.example.location
-  resource_group_name = azurerm_resource_group.example.name
+
+resource "azurerm_virtual_network" "vnet01" {
+  name                = var.virtual_network_name
+  location            = azurerm_resource_group.rg01.location
+  resource_group_name = azurerm_resource_group.rg01.name
+  address_space       = var.virtual_network_address
 }
 
-resource "azurerm_subnet" "example" {
-  name                 = "example-subnet"
-  resource_group_name  = azurerm_resource_group.example.name
-  virtual_network_name = azurerm_virtual_network.example.name
-  address_prefixes     = ["10.0.1.0/24"]
+resource "azurerm_subnet" "subnet1" {
+  name                 = var.virtual_network_subnet_1_name
+  resource_group_name  = azurerm_resource_group.rg01.name
+  virtual_network_name = azurerm_virtual_network.vnet01.name
+  address_prefixes     = var.virtual_network_subnet_1_address
   
 
   delegation {
@@ -43,10 +44,10 @@ resource "azurerm_subnet" "example" {
   }
 }
 
-resource "azurerm_app_service_plan" "example" {
-  name                = "example-app-service-plan"
-  location            = azurerm_resource_group.example.location
-  resource_group_name = azurerm_resource_group.example.name
+resource "azurerm_app_service_plan" "plan01" {
+  name                = var.app_sevice_plan_name
+  location            = azurerm_resource_group.rg01.location
+  resource_group_name = azurerm_resource_group.rg01.name
 
   sku {
     tier = "Standard"
@@ -55,13 +56,13 @@ resource "azurerm_app_service_plan" "example" {
 }
 
 resource "azurerm_app_service" "example" {
-  name                = "croisnouveaute"
-  location            = azurerm_resource_group.example.location
-  resource_group_name = azurerm_resource_group.example.name
-  app_service_plan_id = azurerm_app_service_plan.example.id
+  name                = var.app_service_name
+  location            = azurerm_resource_group.rg01.location
+  resource_group_name = azurerm_resource_group.rg01.name
+  app_service_plan_id = azurerm_app_service_plan.plan01.id
 }
 
 resource "azurerm_app_service_virtual_network_swift_connection" "example" {
   app_service_id = azurerm_app_service.example.id
-  subnet_id      = azurerm_subnet.example.id
+  subnet_id      = azurerm_subnet.subnet1.id
 }
