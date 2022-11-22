@@ -33,7 +33,7 @@ variable "virtual_network_subnet_1_address" {
     variable "app_sevice_plan_name" {
     type = string
     description = "Azure App Service Plan Name"
-  }
+    }
 
 variable "app_service_name" {
     type = string
