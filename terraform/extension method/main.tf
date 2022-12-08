@@ -13,11 +13,6 @@ terraform {
 provider "azurerm" {
   features {}
 }
-locals {
-  environment = terraform.workspace
-  location = "eastus"
-}
-
 
 resource "azurerm_resource_group" "example" {
   name     = "example-resources"
