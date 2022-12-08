@@ -19,10 +19,7 @@ jobs:
            path: ./terraform/extension_method/
           #cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-      - name: Terraform Format
-        id: fmt
-        working-directory: ./terraform/extension_method/
-        run: terraform fmt -check
+      
 
       - name: Terraform Init
         id: init
